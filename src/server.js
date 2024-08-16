@@ -11,14 +11,15 @@ import conn from "./config/conn.js";
 import'./models/palestranteModel.js';
 import'./models/eventosModels.js';
 import'./models/participanteModel.js';
+import'./models/feedbackModels.js';
 
 //rotas
-import palestranteRouter from "./routes/palestranteRoutes.js"
+import eventosRouter from "./routes/eventosRouter.js";
 
 const app = express();
 app.use(express.json());
 
-app.use('/eventos', palestranteRouter)
+app.use('/eventos', eventosRouter)
 
 //404
 app.use((request, response) => {

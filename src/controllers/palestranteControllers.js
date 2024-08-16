@@ -2,54 +2,48 @@ import conn from "../config/conn.js";
 import { v4 as uuidv4 } from "uuid";
 
 export const register = (request, response) => {
-    const { nome,expertise } = request.body;
-  
-      const id = uuidv4();
+  const { nome, expertise } = request.body;
 
-      const insertSQL = /*sql*/ `INSERT INTO palestrantes(??, ??, ??) VALUES (?,?,?)`;
-      const insertData = [
-        "palestrante_id",
-        "nome",
-        "expertise",
-        id,
-        nome,
-        expertise,
-      ];
-      conn.query(insertSQL, insertData, (err) => {
-        if (err) {
-          console.error(err)
-          response.status(500).json({ err: "Erro ao cadastrar palestrante" });
-          return;
-        }
-  
-        const palestranteSql = /*sql*/ `SELECT * FROM palestrantes WHERE ?? = ?`;
-        const palestranteData = ["palestrante_id", id];
-        conn.query(palestranteSql, palestranteData, async (err, data) => {
-          if (err) {
-            console.error(err);
-            response.status(500).json({ err: "Erro ao selecionar palestrante" });
-            return;
-          }
-          response.status(200).json({message: "Palestrante cadastrado"})
-        });
-      });
+  const id = uuidv4();
+
+  const insertSQL = /*sql*/ `INSERT INTO palestrantes(??, ??, ??) VALUES (?,?,?)`;
+  const insertData = [
+    "palestranteId",
+    "nome",
+    "expertise",
+    id,
+    nome,
+    expertise,
+  ];
+  conn.query(insertSQL, insertData, (err) => {
+    if (err) {
+      console.error(err);
+      response.status(500).json({ err: "Erro ao cadastrar palestrante" });
+      return;
+    }
+
+    const palestranteSql = /*sql*/ `SELECT * FROM palestrantes WHERE ?? = ?`;
+    const palestranteData = ["palestranteId", id];
+    conn.query(palestranteSql, palestranteData, async (err, data) => {
+      if (err) {
+        console.error(err);
+        response.status(500).json({ err: "Erro ao selecionar palestrante" });
+        return;
+      }
+      response.status(200).json({ message: "Palestrante cadastrado" });
+    });
+  });
 };
 
 export const listarPalestrante = (request, response) => {
-
-  const sql = /*sql*/ `SELECT * FROM palestrantes` ;
+  const sql = /*sql*/ `SELECT * FROM palestrantes`;
   conn.query(sql, (err, data) => {
-      if (err) {
+    if (err) {
       response.status(500).json({ message: "Erro ao buscar os palestrantes" });
       return console.log(err);
-      }
-      const palestrantes = data;
-      
-      response.status(200).json(palestrantes);
+    }
+    const palestrantes = data;
+
+    response.status(200).json(palestrantes);
   });
-  }
-
-
-
-
-  
+};
